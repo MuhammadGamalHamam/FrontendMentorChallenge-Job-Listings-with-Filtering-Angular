@@ -1,0 +1,51 @@
+<div class="appWrapper">
+  <header class="header">
+    <div class="container">
+      <div class="filter-box">
+        <div class="filter-box__categories" [ngClass]="(getNumItems() > 0) ? 'active' : ''">
+          <ng-container *ngFor="let obj of itemsSelected | keyvalue : 0">
+            <button class="btn-filter" *ngFor="let item of itemsSelected[obj.key]">
+              <div class="btn-filter__name">{{ item }}</div>
+              <span class="btn-filter__icon" (click)="removeItemFromFilter(item, obj.key)"><img src="../assets/images/icon-remove.svg"></span>
+            </button>
+          </ng-container>
+        </div>
+        <div>
+          <a href="#" (click)="clearFilter()">Clear</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="main results">
+    <div class="container">
+      <ul>
+        <li *ngFor="let item of items">
+          <div class="job" [ngClass]="(item.featured) ? 'featured' : ''" *ngIf="isVisible(item)">
+            <div class="job__logo">
+              <img src="{{ item.logo }}">
+            </div>
+            <div class="job__data">
+              <div>
+                <span class="job__company">{{ item.company }}</span>
+                <span class="pill pill-new" *ngIf="item.new">New!</span>
+                <span class="pill pill--featured" *ngIf="item.featured">Featured</span>
+              </div>
+              <div>
+                <span class="job__position">{{ item.position }}</span>
+                <div class="job__info">
+                  {{ item.postedAt }} <span class="separator">&middot;</span> {{ item.contract }} <span class="separator">&middot;</span> {{ item.location }}
+                </div>
+              </div>
+            </div>
+            <div class="job__categories">
+              <button class="btn-item" *ngIf="item.role" (click)="addItemToFilter($event, 'role')">{{ item.role }}</button>
+              <button class="btn-item" *ngIf="item.level" (click)="addItemToFilter($event, 'level')">{{ item.level }}</button>
+              <button class="btn-item" *ngFor="let language of item.languages" (click)="addItemToFilter($event, 'languages')">{{ language }}</button>
+              <button class="btn-item" *ngFor="let tool of item.tools" (click)="addItemToFilter($event, 'tools')">{{ tool }}</button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </main>
+</div>
